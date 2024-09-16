@@ -12,9 +12,63 @@ const users = [
   { id: 10, name: "Morgan", age: 87 },
 ];
 
+const searchInputByName = document.getElementById("name");
+const filterInputByAge = document.getElementById("age");
+const filterButton = document.getElementById("filter");
+
+const ulUsersList = document.getElementById("users");
+
 // TODO: Hent HTML #id med getElementById
 // TODO: Lag en funksjon som kan brukes til å skrive ut HTMLen for å se brukerene. Du kan bruke users importert over for å hente en liste med 10 brukere
+
+const showUsers = () => {
+  ulUsersList.innerHTML = "";
+  users.forEach((user) => {
+    const li = document.createElement("li");
+    li.innerHTML = `${user.name} (${user.age})`;
+    ulUsersList.appendChild(li);
+  });
+};
+
 // TODO: Lag en funksjon som håndterer søket og oppdaterer grensesnittet med resultatet fra søket
+
+const handleSearch = () => {
+  const searchName = searchInputByName.value;
+  const searchAge = filterInputByAge.value;
+
+  const searchResult = users.filter((user) => {
+    return (
+      user.name.toLowerCase().includes(searchName.toLowerCase()) &&
+      user.age.toString().includes(searchAge)
+    );
+  });
+  ulUsersList.innerHTML = "";
+  searchResult.forEach((user) => {
+    const li = document.createElement("li");
+    li.innerHTML = `${user.name} (${user.age})`;
+    ulUsersList.appendChild(li);
+  });
+};
+
 // TODO: Lag en funksjon som håndterer filteret og oppdaterer grensesnittet med resultatet fra filteret
+const handleFilter = () => {
+  const filterAge = parseInt(filterInputByAge.value);
+  const filterResult = users.filter((user) => {
+    return user.age >= filterAge;
+  });
+  ulUsersList.innerHTML = "";
+  filterResult.forEach((user) => {
+    const li = document.createElement("li");
+    li.innerHTML = `${user.name} (${user.age})`;
+    ulUsersList.appendChild(li);
+  });
+};
+
 // TODO: Lytt til tastatur klikk på søkefeltet, den skal trigge søkefunksjonen (handleSearch)
+searchInputByName.addEventListener("keyup", handleSearch);
+// filterInputByAge.addEventListener("keyup", handleSearch); // Lytter dynamisk etter endring i inputfeltet for alder
+
 // TODO: Lytt til klikk på filter-knappen, den skal trigge filterfunksjonen (handleFilter)
+filterButton.addEventListener("click", handleFilter);
+
+showUsers();
